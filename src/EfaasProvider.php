@@ -10,6 +10,7 @@ use Javaabu\EfaasSocialite\Enums\VerificationLevels;
 use Laravel\Socialite\Two\AbstractProvider;
 use Laravel\Socialite\Two\ProviderInterface;
 use Javaabu\EfaasSocialite\EfaasUser as User;
+use Illuminate\Support\Str;
 
 class EfaasProvider extends AbstractProvider implements ProviderInterface
 {
@@ -120,6 +121,7 @@ class EfaasProvider extends AbstractProvider implements ProviderInterface
         return $this->request->input(self::ONE_TAP_LOGIN_KEY);
     }
 
+
     /**
      * Get the GET parameters for the code request.
      *
@@ -128,13 +130,25 @@ class EfaasProvider extends AbstractProvider implements ProviderInterface
      */
     protected function getCodeFields($state = null)
     {
+
+        session()->put('state', $state = Str::random(40));
+
+        session()->put('code_verifier', $code_verifier = Str::random(128));
+
+        $code_challenge = strtr(rtrim(
+           base64_encode(hash('sha256', $code_verifier, true))
+        , '='), '+/', '-_');
+
         $fields = [
             'client_id' => $this->clientId,
             'redirect_uri' => $this->redirectUrl,
             'response_type' => 'code id_token',
             'response_mode' => 'form_post',
             'scope' => $this->formatScopes($this->getScopes(), $this->scopeSeparator),
-            'nonce' => $this->getState()
+            'nonce' => $this->getState(),
+            'state' => $state,
+            'code_challenge' => $code_challenge,
+            'code_challenge_method' => 'S256'
         ];
 
         // add the efaas login code if provided
