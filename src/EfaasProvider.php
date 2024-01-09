@@ -148,7 +148,8 @@ class EfaasProvider extends AbstractProvider implements ProviderInterface
             'nonce' => $this->getState(),
             'state' => $state,
             'code_challenge' => $code_challenge,
-            'code_challenge_method' => 'S256'
+            'code_challenge_method' => 'S256',
+            'grant_type' => 'authorization_code'
         ];
 
         // add the efaas login code if provided
