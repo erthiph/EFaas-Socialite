@@ -144,7 +144,7 @@ class EfaasProvider extends AbstractProvider implements ProviderInterface
             'redirect_uri' => $this->redirectUrl,
             'response_type' => 'code',
             'response_mode' => 'form_post',
-            'scope' => $this->formatScopes($this->getScopes(), $this->scopeSeparator),
+            'scope' => 'openid efaas.profile efaas.email efaas.mobile',
             'nonce' => $this->getState(),
             'state' => $state,
             'code_challenge' => $code_challenge,
