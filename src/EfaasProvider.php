@@ -142,14 +142,13 @@ class EfaasProvider extends AbstractProvider implements ProviderInterface
         $fields = [
             'client_id' => $this->clientId,
             'redirect_uri' => $this->redirectUrl,
-            'response_type' => 'code id_token',
+            'response_type' => 'code',
             'response_mode' => 'form_post',
             'scope' => $this->formatScopes($this->getScopes(), $this->scopeSeparator),
             'nonce' => $this->getState(),
             'state' => $state,
             'code_challenge' => $code_challenge,
-            'code_challenge_method' => 'S256',
-            'grant_type' => 'authorization_code'
+            'code_challenge_method' => 'S256'
         ];
 
         // add the efaas login code if provided
