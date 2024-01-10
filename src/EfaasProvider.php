@@ -217,6 +217,7 @@ class EfaasProvider extends AbstractProvider implements ProviderInterface
      */
     protected function getTokenUrl()
     {
+        dd($this->getApiUrl('token'));
         return $this->getApiUrl('token');
     }
 
