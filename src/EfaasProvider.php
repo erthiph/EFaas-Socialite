@@ -131,13 +131,7 @@ class EfaasProvider extends AbstractProvider implements ProviderInterface
     protected function getCodeFields($state = null)
     {
 
-        session()->put('state', $state = Str::random(40));
 
-        session()->put('code_verifier', $code_verifier = Str::random(128));
-
-        $code_challenge = strtr(rtrim(
-           base64_encode(hash('sha256', $code_verifier, true))
-        , '='), '+/', '-_');
 
         $fields = [
             'client_id' => $this->clientId,
@@ -146,9 +140,6 @@ class EfaasProvider extends AbstractProvider implements ProviderInterface
             'response_mode' => 'form_post',
             'scope' => 'openid efaas.profile efaas.email efaas.mobile',
             'nonce' => $this->getState(),
-            'state' => $state,
-            'code_challenge' => $code_challenge,
-            'code_challenge_method' => 'S256'
         ];
 
         // add the efaas login code if provided
